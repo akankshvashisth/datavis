@@ -85,21 +85,42 @@ namespace aks
 
                 unsigned int rangeSetter(2);
 
+                bool hasLines = false;
+
                 //using namespace aks::visualization;
                 for (unsigned int i(0); i < Globals::GetInstance().dataArray.size()-1; i+=resolution)
                 {
+
                     glColor3f( Globals::GetInstance().dataArray[i][rangeSetter]*2/maxs[rangeSetter], 
                         (Globals::GetInstance().dataArray[i][rangeSetter]/maxs[rangeSetter])-1.0f, 
                         1.0 - ((Globals::GetInstance().dataArray[i][rangeSetter]-mins[rangeSetter])/maxs[rangeSetter]-mins[rangeSetter]) );
                     glPushMatrix();
-                    glBegin(GL_LINES);
-                    glVertex3f( Globals::GetInstance().dataArray[i][0],
-                        Globals::GetInstance().dataArray[i][1],
-                        Globals::GetInstance().dataArray[i][2] );
-                    glVertex3f( Globals::GetInstance().dataArray[i+1][0],
-                        Globals::GetInstance().dataArray[i+1][1],
-                        Globals::GetInstance().dataArray[i+1][2]);
-                    glEnd();
+                    if (hasLines)
+                    {
+                        glBegin(GL_LINES);
+                        glVertex3f( Globals::GetInstance().dataArray[i][0],
+                            Globals::GetInstance().dataArray[i][1],
+                            Globals::GetInstance().dataArray[i][2] );
+                        glVertex3f( Globals::GetInstance().dataArray[i+1][0],
+                            Globals::GetInstance().dataArray[i+1][1],
+                            Globals::GetInstance().dataArray[i+1][2]);
+                        glEnd();
+                    }
+                    else
+                    {
+                        //glLoadIdentity();
+                        glTranslatef( Globals::GetInstance().dataArray[i][0],
+                            Globals::GetInstance().dataArray[i][1],
+                            Globals::GetInstance().dataArray[i][2] );
+
+                        glutWireSphere(0.5f, 10,10);
+                        
+
+                    }
+
+
+
+
 
                     glPopMatrix();
                 }
